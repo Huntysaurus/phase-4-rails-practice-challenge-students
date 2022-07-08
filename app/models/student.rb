@@ -1,3 +1,4 @@
 class Student < ApplicationRecord
-    belongs_to :Instructor
+    belongs_to :instructor
+    validates :name, presence: true
 end
