@@ -12,7 +12,13 @@ rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
     end
 
     def create
-        student = Student.create(student_params)
+        student = Student.create!(student_params)
+        render json: student, status: :accepted
+    end
+
+    def update
+        student = Student.find_by(id: params[:id])
+        student.update(student_params)
         render json: student, status: :accepted
     end
 
@@ -32,7 +38,7 @@ rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
     end
 
     def render_unprocessable_entity(invalid)
-        render json:{error: invalid.record.errors}, status: :render_unprocessable_entity
+        render json:{error: invalid.record.errors}, status: :unprocessable_entity
     end
 
 
