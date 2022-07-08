@@ -3,16 +3,22 @@ class InstructorsController < ApplicationController
 
     def index
         instructor = Instructor.all
-        render json: instructor
+        render json: instructor, status: :ok
     end
 
     def show
         instructor = found_instructor
-        render json: instructor
+        render json: instructor, status: :ok
     end
 
     def create
-        instructor = Instructor.new(instructor_params)
+        instructor = Instructor.create!(instructor_params)
+        render json: instructor, status: :accepted
+    end
+
+    def update
+        instructor = Instructor.find_by(id: params[:id])
+        instructor.update(instructor_params)    
         render json: instructor, status: :accepted
     end
 
@@ -32,7 +38,7 @@ class InstructorsController < ApplicationController
     end
 
     def render_unprocessable_entity(invalid)
-        render json:{error: invalid.record.errors}, status: :render_unprocessable_entity
+        render json:{error: invalid.record.errors}, status: :unprocessable_entity
     end
 
 end
